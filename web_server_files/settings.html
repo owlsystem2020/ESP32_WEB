@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://192.168.13.217/ -->
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Required meta tags -->                
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+        <!-- CSS -->        
+        <link rel="stylesheet" href="style.css" type="text/css">        
+        <script src="script.js"></script>    
+    </head>
+    <body onload="loadSettings()">
+
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>Settings</li>
+            </ul>
+        </nav>
+
+        <main>
+        <hr>
+
+            <header>
+                <h2>Device info</h2>
+            </header>
+
+            <section>
+                <aside>
+                    <legend>Serial number:</legend>
+                    <p id="sn">wait</p>
+                </aside>
+                <aside>
+                    <legend>IP address:</legend>
+                    <p id="ip">wait</p>
+                </aside>
+                <aside>
+                    <legend>MAC:</legend>
+                    <p id="mac">wait</p>
+                </aside>
+                <aside>
+                    <legend>Wi-Fi mode:</legend>
+                    <p id="mode">wait</p>
+                </aside>
+            </section>
+
+            <hr>
+
+            <header>
+                <h2>Wi-Fi</h2>
+            </header>
+
+            <section>
+
+                <form id="wifi_ssid_form">
+                    <fieldset>
+                        <legend>Wi-Fi station settings</legend>
+                        <div>
+                            <label>WiFi SSID</label>
+                            <input type="text" id="aligned-name" placeholder="SSID" name="wifi_ssid"/>
+                            <p id="ssid"></p>
+                        </div>
+                        <div>
+                            <label>Wi-Fi Password</label>
+                            <input type="password" placeholder="Password" name="wifi_pass"/>
+                        </div>
+                        <div>
+                            <input type="submit" value="Send Me!">
+                        </div>
+                    </fieldset>
+                </form>
+
+                <form action="act">
+                    <fieldset>
+                        <legend>Change Wi-Fi mode</legend>
+                        <div>
+                            <select name="wifiMode" onchange="ajaxAction(this.value)">                
+                                <option value="">Select Wi-Fi mode:</option>                
+                                <option value="AP">AP</option>                
+                                <option value="ST">Station</option>            
+                            </select>
+                        </div>
+                        <div>Sucsseful set</div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Reboot</legend>
+                        <div>
+                            <button type="submit" value="reset" name="mode">Reboot</button>
+                        </div>
+                        <div>Reboot for applying new Wi-Fi mode</div>
+                    </fieldset>   
+
+                </form>
+
+            </section>
+
+            <hr>
+
+            <header>
+                <h2>RTC</h2>
+            </header>
+
+            <section>
+
+                <form>
+                    <fieldset>
+                        <legend>Set time</legend>
+                        <div>
+                            <label>Time</label>
+                            <input type="text" id="time" placeholder="12:00" />
+                        </div>
+                        <div>
+                            <label>Time ON</label>
+                            <input type="text" id="timeOn" placeholder="07:00" />
+                        </div>
+                        <div>
+                            <label>Time OFF</label>
+                            <input type="text" id="timeOff" placeholder="21:00" />
+                        </div>
+                        <div>
+                            <button type="submit">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </section>
+        </main>
+        <footer>
+            <hr>
+            <p>
+                <small>Designed by SL</small>
+            </p>
+        </footer>
+     
+    </body>
+</html>
