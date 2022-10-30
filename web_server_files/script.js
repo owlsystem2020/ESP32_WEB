@@ -102,14 +102,47 @@ window.addEventListener( "load", function () {
   
     // Access the form element...
     const form = document.getElementById( "wifi_ssid_form" );
+    //const relay1Form = document.getElementById( "relay1_form" );
   
     // ...and take over its submit event.
-    form.addEventListener( "submit", function ( event ) {
-      event.preventDefault();
-  
-      sendData();
-    } );
+    form.addEventListener( "submit", sendData);
+    //relay1Form.addEventListener( "submit", sendData);
+
   } );
+
+  window.addEventListener( "load", function () {
+    function sendData(formName) {
+      const XHR = new XMLHttpRequest();
+  
+      // Bind the FormData object and the form element
+      const FD = new FormData( formName );
+      const queryString = new URLSearchParams(FD).toString();
+      
+  
+      // Define what happens on successful data submission
+      XHR.addEventListener( "load", function(event) {
+        alert( event.target.responseText );
+      } );
+  
+      // Define what happens in case of error
+      XHR.addEventListener( "error", function( event ) {
+        alert( 'Oops! Something went wrong.' );
+      } );
+  
+      // Set up our request
+      XHR.open( "GET", "act?form=" + formName.id + "&" + queryString);
+  
+      // The data sent is what the user provided in the form
+      XHR.send( FD );
+    }
+  
+    // Access the form element...
+    const relay1Form = document.getElementById( "r1_form" );
+  
+    // ...and take over its submit event.
+    relay1Form.addEventListener( "change", function () { sendData(relay1Form); });
+  } );
+
 
 function getADCValue()
 {
@@ -134,4 +167,4 @@ function getADCValue()
     httpRequest.send();
 }
 
-var t = setInterval(getADCValue,2000);
+var t = setInterval(getADCValue,5000);
