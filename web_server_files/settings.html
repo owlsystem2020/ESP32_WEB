@@ -147,7 +147,7 @@
                             <input type="password" placeholder="Password" name="wifi_pass"/>
                         </div>
                         <div>
-                            <input type="submit" value="Submit">
+                            <button type="submit" value="submit">Submit</button>
                         </div>
                     </fieldset>
                 </form>
@@ -187,19 +187,20 @@
 
                 <form  id="rtc_form">
                     <fieldset>
-                        <legend>Set time</legend>
-                        <div>
-                            <input type="checkbox" name="rtc_sntp">
-                            <label for="rtc_sntp">SNTP</label>
-                        </div>
+                        <legend>RTC settings</legend>
+                        <div>Current date and time:</div>
+                        <div id="current_time">??-??-?? ??:??</div>
                         <div>
                             <label>Manual setting time</label>
-                            <input type="text" name="rtc_year" value=""/>
-                            <input type="text" name="rtc_mon" value=""/>
-                            <input type="text" name="rtc_day" value=""/>
-                            <input type="time" name="rtc_time" value=""/>
-                            <input type="text" name="rtc_tz" value=""/>
-                            <div id="current_time">??:??</div>
+                            <input type="datetime-local" name="rtc_datetime" value=""/>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="rtc_sntp">
+                            <label for="rtc_sntp">SNTP (pool.ntp.org)</label>
+                        </div>
+                        <div>
+                            <legend>TimeZone</legend>
+                            <input type="text" name="rtc_tz" value="MSK-3"/>
                         </div>
                     </fieldset>
                 </form>
