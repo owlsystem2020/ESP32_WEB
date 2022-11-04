@@ -6,7 +6,8 @@
         <!-- Required meta tags -->                
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         <!-- CSS -->        
-        <link rel="stylesheet" href="style.css" type="text/css">        
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="icon" href="favicon.ico" type="image/png">    
         <script src="script.js"></script>    
     </head>
     <body onload="loadSettings()">
@@ -184,16 +185,21 @@
 
             <section>
 
-                <form>
+                <form  id="rtc_form">
                     <fieldset>
                         <legend>Set time</legend>
                         <div>
-                            <label>Time</label>
-                            <input type="time" id="time"/>
-                            <div>12:00</div>
+                            <input type="checkbox" name="rtc_sntp">
+                            <label for="rtc_sntp">SNTP</label>
                         </div>
                         <div>
-                            <button type="submit">Submit</button>
+                            <label>Manual setting time</label>
+                            <input type="text" name="rtc_year" value=""/>
+                            <input type="text" name="rtc_mon" value=""/>
+                            <input type="text" name="rtc_day" value=""/>
+                            <input type="time" name="rtc_time" value=""/>
+                            <input type="text" name="rtc_tz" value=""/>
+                            <div id="current_time">??:??</div>
                         </div>
                     </fieldset>
                 </form>

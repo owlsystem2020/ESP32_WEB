@@ -17,6 +17,7 @@ function loadSettings()
                 document.getElementById("mac").innerHTML = obj.mac;
                 document.getElementById("mode").innerHTML = obj.mode;
                 document.getElementsByName("wifi_ssid")[0].placeholder=obj.wifi_ssid;
+                document.getElementById("current_time").innerHTML = obj.current_time;
                 document.getElementsByName("r1_time_on")[0].value="06:00";
             } 
             else 
@@ -75,11 +76,13 @@ function loadSettings()
     // Access the form element...
     const relay1Form = document.getElementById( "r1_form" );
     const wifiForm = document.getElementById( "wifi_ssid_form" );
+    const rtcForm = document.getElementById( "rtc_form" );
   
     // ...and take over its submit event.
     relay1Form.addEventListener( "change", function () { sendData(relay1Form); });
     // ...and take over its submit event.
     wifiForm.addEventListener( "submit", function () { sendData(wifiForm); });
+    rtcForm.addEventListener( "change", function () { sendData(rtcForm); });
 
   } );
 
