@@ -156,13 +156,13 @@
                     <fieldset>
                         <legend>Change Wi-Fi mode</legend>
                         <div>
-                            <select name="wifiMode" onchange="ajaxAction(this.value)">                
+                            <select name="wifi_mode" id="wifi_mode" onchange="ajaxAction(this.value)">                
                                 <option value="">Select Wi-Fi mode:</option>                
                                 <option value="AP">AP</option>                
                                 <option value="ST">Station</option>            
                             </select>
                         </div>
-                        <div>Sucsseful set</div>
+                        <div id="wifi_cb"></div>
                     </fieldset>
 
                     <fieldset>
@@ -194,13 +194,12 @@
                             <label>Manual setting time</label>
                             <input type="datetime-local" name="rtc_datetime" value=""/>
                         </div>
-                        <div>
+                        <div >
                             <input type="checkbox" name="rtc_sntp">
                             <label for="rtc_sntp">SNTP (pool.ntp.org)</label>
                         </div>
-                        <div>
-                            <legend>TimeZone</legend>
-                            <input type="text" name="rtc_tz" value="MSK-3"/>
+                        <legend>TimeZone</legend>
+                        <div id="rtc_tz_div">
                         </div>
                     </fieldset>
                 </form>

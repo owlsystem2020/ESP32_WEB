@@ -79,6 +79,7 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: var(--justify-important);
+    
 }
 
 section img,
@@ -367,6 +368,7 @@ section form {
     margin: 1rem;
     padding: 1.25rem;
     width: var(--width-card);
+    min-width: 350px;
 }
 
 form header {
