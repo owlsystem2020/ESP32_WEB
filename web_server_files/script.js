@@ -1,8 +1,95 @@
 
+// device configuration
+var deviceConfig = '{ "relay": 8, "in": 4, "adc": 5 }';
+
+// select
 function selectElement(id, valueToSelect) {    
     let element = document.getElementById(id);
     element.value = valueToSelect;
 };
+
+// add inputs to form of relay
+function addInputsOptions(selecttName, relayNum, inNum, adcNum) {
+    //Create and append select list
+    var selectList = document.getElementsByName(selecttName);
+
+    //Create and append the options in
+    for (var i = 1; i <= inNum; i++) {
+        var option = document.createElement("option");
+        option.value = `r${relayNum}_in${i}`;
+        option.text = `IN${i}`;
+        selectList[0].appendChild(option);
+    }
+
+    //Create and append the options in
+    for (var i = 1; i <= adcNum; i++) {
+        var option = document.createElement("option");
+        option.value = `r${relayNum}_adc${i}`;
+        option.text = `ADC${i}`;
+        selectList[0].appendChild(option);
+    }
+}
+
+// create relay options and settings
+function createRelaySettings(num) {
+    var formName = "r" + num + "_form";
+
+    const contentText = `<fieldset>\
+    <legend>Relay ${num}</legend>\
+    <div>\
+        <input type="checkbox" name="r${num}_on_off">\
+        <label for="r${num}_on_off">Once a day On/Off</label>\
+    </div>\
+    <div>\
+        <label>Time ON</label>\
+        <input type="time" name="r${num}_time_on" value="07:00"/>\
+    </div>\
+    <div>\
+        <label>Time OFF</label>\
+        <input type="time" name="r${num}_time_off" value="21:00"/>\
+    </div>\
+    <div>\
+        <input type="checkbox" name="r${num}_period">\
+        <label for="r${num}_period">Periodical On/Off</label>\
+    </div>\
+    <div>\
+        <label>Period ON</label>\
+        <input type="time" name="r${num}_period_on" value="00:10"/>\
+    </div>\
+    <div>\
+        <label>Period OFF</label>\
+        <input type="time" name="r${num}_period_off" value="00:20"/>\
+    </div>\
+    <div>\
+        <label>Input\'s priority</label>\
+        <select name="r${num}_in_pri">\
+            <option value="">Select priority:</option>\
+            <option value="r${num}_in_hieght_pri">HIEGHT</option>\
+            <option value="r${num}_in_middle_pri">MIDDLE</option>\
+            <option value="r${num}_in_low_pri">LOW</option>\
+        </select>\
+    </div>\
+    <div>\
+        <label>Bound input/ADC</label>\
+        <select name="r${num}_bound_in">\
+            <option value="">Select an input:</option>\
+        </select>\
+    </div>\
+    <div>\
+        <label>ADC threshold level</label>\
+        <input type="text" name="r${num}_adc_thld" placeholder="500" />\
+        <label>ADC hysteresis</label>\
+        <input type="text" name="r${num}_adc_hyst" placeholder="10" />\
+    </div>\
+    <div>\
+        <input type="checkbox" name="r${num}_inv">\
+        <label for="r${num}_inv">Inversion</label>\
+    </div>\
+    </fieldset>`;
+    document.getElementById(formName).innerHTML = contentText;
+
+    
+}
 
 function loadSettings()
 {
@@ -16,6 +103,20 @@ function loadSettings()
             // Everything is good, the response was received.
             if (this.status == 200) 
             {
+                var device = JSON.parse(deviceConfig);
+
+                var plc = document.getElementById("plc");
+
+                for (var i = 1; i <= device.relay; i++) {
+                    var relayForm = document.createElement("form");
+                    relayForm.id = `r${i}_form`;
+                    plc.appendChild(relayForm);
+                    // add relay
+                    createRelaySettings(`${i}`);
+                    // add inputs to relay
+                    addInputsOptions(`r${i}_bound_in`, i, device.in, device.adc);;
+                }
+
                 var myParent = document.getElementById("rtc_tz_div");
             
                 //Create and append select list

@@ -51,80 +51,8 @@
                 <h2>PLC</h2>
             </header>
 
-            <section>
-<!-- relay 1 -->
-                <form id="r1_form">
-
-                    <fieldset>
-                        <legend>Relay 1</legend>
-                        <div>
-                            <input type="checkbox" name="r1_on_off">
-                            <label for="r1_on_off">Once a day On/Off</label>
-                        </div>
-                        <div>
-                            <label>Time ON</label>
-                            <input type="time" name="r1_time_on" value="07:00"/>
-                        </div>
-                        <div>
-                            <label>Time OFF</label>
-                            <input type="time" name="r1_time_off" value="21:00"/>
-                        </div>
-                        <div>
-                            <input type="checkbox" name="r1_period">
-                            <label for="r1_period">Periodical On/Off</label>
-                        </div>
-                        <div>
-                            <label>Period ON</label>
-                            <input type="time" name="r1_period_on" value="00:10"/>
-                        </div>
-                        <div>
-                            <label>Period OFF</label>
-                            <input type="time" name="r1_period_off" value="00:20"/>
-                        </div>
-                        <div>
-                            <label>Input's priority</label>
-                            <select name="r1_in_pri">                
-                                <option value="">Select priority:</option>                
-                                <option value="r1_in_hieght_pri">HIEGHT</option>
-                                <option value="r1_in_middle_pri">MIDDLE</option>               
-                                <option value="r1_in_low_pri">LOW</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Bound input/ADC</label>
-                            <select name="r1_bound_in">                
-                                <option value="">Select an input:</option>                
-                                <option value="r1_in1">IN1</option>                
-                                <option value="r1_in2">IN2</option>
-                                <option value="r1_in3">IN3</option>
-                                <option value="r1_in4">IN4</option>
-             
-                                <option value="r1_adc1">ADC1</option>                
-                                <option value="r1_adc2">ADC2</option>
-                                <option value="r1_adc3">ADC3</option>
-                                <option value="r1_adc4">ADC4</option>     
-                            </select>
-                        </div>
-                        <div>
-                            <label>ADC threshold level</label>
-                            <input type="text" name="r1_adc_thld" placeholder="500" />
-                            <label>ADC hysteresis</label>
-                            <input type="text" name="r1_adc_hyst" placeholder="10" />
-                        </div>
-                        <div>
-                            <input type="checkbox" name="r1_inv">
-                            <label for="r1_inv">Inversion</label>
-                        </div>
-                    </fieldset>
-
-                </form>
-<!-- relay 2 -->
-
-<!-- relay 3 -->
-
-<!-- relay 4 -->
-
-</section>
+            <section id="plc">
+            </section>
 
             <hr/>
 <!-- wi-fi -->

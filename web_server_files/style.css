@@ -22,8 +22,8 @@
     --line-height: 1.5;
     --width-card: 285px;
     --width-card-medium: 460px;
-    --width-card-wide: 800px;
-    --width-content: 780px;
+    --width-card-wide: 1020px;
+    --width-content: 1000px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -368,7 +368,7 @@ section form {
     margin: 1rem;
     padding: 1.25rem;
     width: var(--width-card);
-    min-width: 350px;
+    min-width: 330px;
 }
 
 form header {
