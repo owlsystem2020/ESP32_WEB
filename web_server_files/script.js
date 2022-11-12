@@ -1,6 +1,10 @@
 
 // device configuration
-var deviceConfig = '{ "relay": 8, "in": 4, "adc": 5 }';
+var deviceConfig =  '{ "sn": "00000001", "mac": "00:00:00:00:00:00", "name": "HydroP", "ip": "192.168.1.12", "relay": 4, "in": 4, "adc": 4 }';
+var wifiConfig =    '{ "ssid": "VOLOH_2G", "pass": "volohkrut", "mode": "ST"}';
+var rtcConfig =     '{ "sntp": 1, "tz": 56, "time": "2022-11-12 16:17"}';
+var r1Config =      '{ "r1_on_off": 1, "r1_time_on": "07:00", "r1_time_off": "21:00", "r1_period": 1, "r1_period_on": "05:00", \
+                    "r1_period_off": "25:00", "r1_in_pri": 2, "r1_bound_in": "in2", "r1_adc_thld": 300, "r1_adc_hyst": 42, "r1_inv": 0 }';
 
 // select
 function selectElement(id, valueToSelect) {    
@@ -64,9 +68,9 @@ function createRelaySettings(num) {
         <label>Input\'s priority</label>\
         <select name="r${num}_in_pri">\
             <option value="">Select priority:</option>\
-            <option value="r${num}_in_hieght_pri">HIEGHT</option>\
-            <option value="r${num}_in_middle_pri">MIDDLE</option>\
-            <option value="r${num}_in_low_pri">LOW</option>\
+            <option value="2">HIEGHT</option>\
+            <option value="1">MIDDLE</option>\
+            <option value="0">LOW</option>\
         </select>\
     </div>\
     <div>\
