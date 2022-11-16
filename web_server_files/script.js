@@ -20,7 +20,7 @@ function addInputsOptions(selecttName, relayNum, inNum, adcNum) {
     //Create and append the options in
     for (var i = 1; i <= inNum; i++) {
         var option = document.createElement("option");
-        option.value = `r${relayNum}_in${i}`;
+        option.value = `in${i}`;
         option.text = `IN${i}`;
         selectList[0].appendChild(option);
     }
@@ -28,7 +28,7 @@ function addInputsOptions(selecttName, relayNum, inNum, adcNum) {
     //Create and append the options in
     for (var i = 1; i <= adcNum; i++) {
         var option = document.createElement("option");
-        option.value = `r${relayNum}_adc${i}`;
+        option.value = `adc${i}`;
         option.text = `ADC${i}`;
         selectList[0].appendChild(option);
     }
@@ -187,6 +187,42 @@ function loadSettings()
     };
 
     httpRequest.open('GET', 'act?settings=get', true);
+    httpRequest.send();
+};
+
+function loadSettings2()
+{
+    var httpRequest;
+    httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function()
+    {
+        if (this.readyState == 4) 
+        {
+            // Everything is good, the response was received.
+            if (this.status == 200) 
+            {
+                var obj = JSON.parse(this.responseText);
+                console.log(obj);
+ 
+            } 
+            else 
+            {
+                // error
+                console.log("error");
+            }
+
+        } 
+        else
+        {
+            // Not ready yet.
+            console.log("not ready yet");
+        }
+
+        return;
+    };
+
+    httpRequest.open('GET', 'act?settings=1', true);
     httpRequest.send();
 };
 
