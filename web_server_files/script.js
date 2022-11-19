@@ -1,10 +1,4 @@
 
-// device configuration
-var deviceConfig =  '{ "sn": "00000001", "mac": "00:00:00:00:00:00", "name": "HydroP", "ip": "192.168.1.12", "relay": 4, "in": 4, "adc": 4 }';
-var wifiConfig =    '{ "ssid": "VOLOH_2G", "pass": "volohkrut", "mode": "ST"}';
-var rtcConfig =     '{ "sntp": 1, "tz": 56, "time": "2022-11-12 16:17"}';
-var r1Config =      '{ "r1_on_off": 1, "r1_time_on": "07:00", "r1_time_off": "21:00", "r1_period": 1, "r1_period_on": "05:00", \
-                    "r1_period_off": "25:00", "r1_in_pri": 2, "r1_bound_in": "in2", "r1_adc_thld": 300, "r1_adc_hyst": 42, "r1_inv": 0 }';
 
 // select
 function selectElement(id, valueToSelect) {    
@@ -41,32 +35,32 @@ function createRelaySettings(num) {
     const contentText = `<fieldset>\
     <legend>Relay ${num}</legend>\
     <div>\
-        <input type="checkbox" name="r${num}_on_off">\
-        <label for="r${num}_on_off">Once a day On/Off</label>\
+        <input type="checkbox" name="on_off">\
+        <label for="on_off">Once a day On/Off</label>\
     </div>\
     <div>\
         <label>Time ON</label>\
-        <input type="time" name="r${num}_time_on" value="07:00"/>\
+        <input type="time" name="time_on" value="07:00"/>\
     </div>\
     <div>\
         <label>Time OFF</label>\
-        <input type="time" name="r${num}_time_off" value="21:00"/>\
+        <input type="time" name="time_off" value="21:00"/>\
     </div>\
     <div>\
-        <input type="checkbox" name="r${num}_period">\
-        <label for="r${num}_period">Periodical On/Off</label>\
+        <input type="checkbox" name="period">\
+        <label for="period">Periodical On/Off</label>\
     </div>\
     <div>\
         <label>Period ON</label>\
-        <input type="time" name="r${num}_period_on" value="00:10"/>\
+        <input type="time" name="period_on" value="00:10"/>\
     </div>\
     <div>\
         <label>Period OFF</label>\
-        <input type="time" name="r${num}_period_off" value="00:20"/>\
+        <input type="time" name="rperiod_off" value="00:20"/>\
     </div>\
     <div>\
         <label>Input\'s priority</label>\
-        <select name="r${num}_in_pri">\
+        <select name="n_pri">\
             <option value="">Select priority:</option>\
             <option value="2">HIEGHT</option>\
             <option value="1">MIDDLE</option>\
@@ -75,26 +69,25 @@ function createRelaySettings(num) {
     </div>\
     <div>\
         <label>Bound input/ADC</label>\
-        <select name="r${num}_bound_in">\
+        <select name="bound_in">\
             <option value="">Select an input:</option>\
         </select>\
     </div>\
     <div>\
         <label>ADC threshold level</label>\
-        <input type="text" name="r${num}_adc_thld" placeholder="500" />\
+        <input type="text" name="adc_thld" placeholder="500" />\
         <label>ADC hysteresis</label>\
-        <input type="text" name="r${num}_adc_hyst" placeholder="10" />\
+        <input type="text" name="adc_hyst" placeholder="10" />\
     </div>\
     <div>\
-        <input type="checkbox" name="r${num}_inv">\
-        <label for="r${num}_inv">Inversion</label>\
+        <input type="checkbox" name="inv">\
+        <label for="inv">Inversion</label>\
     </div>\
     </fieldset>`;
     document.getElementById(formName).innerHTML = contentText;
-
-    
 }
 
+// load settings from application
 function loadSettings()
 {
     var httpRequest;
@@ -107,18 +100,20 @@ function loadSettings()
             // Everything is good, the response was received.
             if (this.status == 200) 
             {
-                var device = JSON.parse(deviceConfig);
+                var config = JSON.parse(this.responseText);
+
+                console.log(config.device.relay);
 
                 var plc = document.getElementById("plc");
 
-                for (var i = 1; i <= device.relay; i++) {
+                for (var i = 1; i <= config.device.relay; i++) {
                     var relayForm = document.createElement("form");
                     relayForm.id = `r${i}_form`;
                     plc.appendChild(relayForm);
                     // add relay
                     createRelaySettings(`${i}`);
                     // add inputs to relay
-                    addInputsOptions(`r${i}_bound_in`, i, device.in, device.adc);;
+                    addInputsOptions(`bound_in`, i, config.device.in, config.device.adc);;
                 }
 
                 var myParent = document.getElementById("rtc_tz_div");
@@ -137,29 +132,24 @@ function loadSettings()
                     selectList.appendChild(option);
                 }
 
-                var obj = JSON.parse(this.responseText);
-                document.getElementById("sn").innerHTML = obj.sn;
-                document.getElementById("ip").innerHTML = obj.ip;
-                document.getElementById("mac").innerHTML = obj.mac;
-                document.getElementById("mode").innerHTML = obj.mode;
-                document.getElementsByName("wifi_ssid")[0].placeholder=obj.wifi_ssid;
-                document.getElementById("current_time").innerHTML = obj.current_time;
-                document.getElementsByName("r1_time_on")[0].value="06:00";
-                selectElement("time_zone", obj.time_zone);
+                // var obj = JSON.parse(this.responseText);
+                // document.getElementById("sn").innerHTML = obj.sn;
+                // document.getElementById("ip").innerHTML = obj.ip;
+                // document.getElementById("mac").innerHTML = obj.mac;
+                // document.getElementById("mode").innerHTML = obj.mode;
+                // document.getElementsByName("wifi_ssid")[0].placeholder=obj.wifi_ssid;
+                // document.getElementById("current_time").innerHTML = obj.current_time;
+                // document.getElementsByName("r1_time_on")[0].value="06:00";
+                // selectElement("time_zone", obj.time_zone);
 
-                if (obj.mode == "AP") {
-                    selectElement("wifi_mode", "AP");
-                }
-                else
-                {
-                    selectElement("wifi_mode", "ST");
-                }
+                document.getElementsByName("wifi_ssid")[0].placeholder=config.wifi.wifi_ssid;
+                selectElement("wifi_mode", config.wifi.wifi_mode);
 
-                if (obj.rtc_sntp === 1) {
+                selectElement("time_zone", config.rtc.rtc_tz);
+                if (config.rtc.rtc_sntp===1) {
                     document.getElementsByName("rtc_sntp")[0].checked = true;
                 }
-                else
-                {
+                else {
                     document.getElementsByName("rtc_sntp")[0].checked = false;
                 }
                 
@@ -186,47 +176,11 @@ function loadSettings()
         return;
     };
 
-    httpRequest.open('GET', 'act?settings=get', true);
-    httpRequest.send();
-};
-
-function loadSettings2()
-{
-    var httpRequest;
-    httpRequest = new XMLHttpRequest();
-
-    httpRequest.onreadystatechange = function()
-    {
-        if (this.readyState == 4) 
-        {
-            // Everything is good, the response was received.
-            if (this.status == 200) 
-            {
-                var obj = JSON.parse(this.responseText);
-                console.log(obj);
- 
-            } 
-            else 
-            {
-                // error
-                console.log("error");
-            }
-
-        } 
-        else
-        {
-            // Not ready yet.
-            console.log("not ready yet");
-        }
-
-        return;
-    };
-
     httpRequest.open('GET', 'act?settings=1', true);
     httpRequest.send();
 };
 
-
+// Data exchane between forms and aplication
 window.addEventListener( "load", function () {
     function sendData(formName) {
       const XHR = new XMLHttpRequest();
@@ -245,6 +199,17 @@ window.addEventListener( "load", function () {
       XHR.addEventListener( "error", function( event ) {
         alert( 'Oops! Something went wrong.' );
       } );
+
+      XHR.onreadystatechange = function()
+    {
+        // Everything is good, the response was received.
+        if (this.status == 200) 
+        {
+            // add feedback
+            document.getElementById("wifi_ssid_fb").innerHTML = this.responseText;
+        }
+        
+    }
   
       // Set up our request
       XHR.open( "GET", "act?form=" + formName.id + "&" + queryString);
@@ -254,19 +219,18 @@ window.addEventListener( "load", function () {
     }
   
     // Access the form element...
-    const relay1Form = document.getElementById( "r1_form" );
     const wifiForm = document.getElementById( "wifi_ssid_form" );
+    const wifiSbmt = document.getElementById( "wifi_submit" );
     const rtcForm = document.getElementById( "rtc_form" );
-  
+
     // ...and take over its submit event.
-    relay1Form.addEventListener( "change", function () { sendData(relay1Form); });
-    // ...and take over its submit event.
-    wifiForm.addEventListener( "submit", function () { sendData(wifiForm); });
+    wifiSbmt.addEventListener( "click", function () { sendData(wifiForm); });
     rtcForm.addEventListener( "change", function () { sendData(rtcForm); });
 
 } );
 
-function  ajaxAction(req)
+// change AP / Station Wi-Fi mode
+function  wifiModeChange(req)
 {
     var httpRequest;
     httpRequest = new XMLHttpRequest();
@@ -275,13 +239,9 @@ function  ajaxAction(req)
         // Everything is good, the response was received.
         if (this.status == 200) 
         {
-            document.getElementById("wifi_cb").innerHTML = "Successful set " + this.responseText;
+            // add feedback
+            document.getElementById("wifi_mode_fb").innerHTML = "Successful set " + this.responseText;
             document.getElementById("mode").innerHTML = this.responseText;
-        }
-        else
-        {
-            // Not ready yet.
-            //document.getElementById("ec").innerHTML = "waiting";
         }
         
     }
