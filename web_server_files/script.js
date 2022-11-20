@@ -7,16 +7,16 @@ function selectElement(id, valueToSelect) {
 };
 
 // add inputs to form of relay
-function addInputsOptions(selecttName, relayNum, inNum, adcNum) {
+function addInputsOptions(selecttId, inNum, adcNum) {
     //Create and append select list
-    var selectList = document.getElementsByName(selecttName);
+    var selectList = document.getElementById(selecttId);//
 
     //Create and append the options in
     for (var i = 1; i <= inNum; i++) {
         var option = document.createElement("option");
         option.value = `in${i}`;
         option.text = `IN${i}`;
-        selectList[0].appendChild(option);
+        selectList.appendChild(option);
     }
 
     //Create and append the options in
@@ -24,8 +24,51 @@ function addInputsOptions(selecttName, relayNum, inNum, adcNum) {
         var option = document.createElement("option");
         option.value = `adc${i}`;
         option.text = `ADC${i}`;
-        selectList[0].appendChild(option);
+        selectList.appendChild(option);
     }
+}
+
+
+// ajax request with any chage in the "formName" form
+function sendData(formName) {
+    const XHR = new XMLHttpRequest();
+
+    //console.log(formName.id);
+
+    // Bind the FormData object and the form element
+    const FD = new FormData( formName );
+    const queryString = new URLSearchParams(FD).toString();
+    
+
+    // Define what happens on successful data submission
+    XHR.addEventListener( "load", function(event) {
+        //alert( event.target.responseText );
+    } );
+
+    // Define what happens in case of error
+    XHR.addEventListener( "error", function( event ) {
+        alert( 'Oops! Something went wrong.' );
+    } );
+
+    XHR.onreadystatechange = function()
+    {
+        // Everything is good, the response was received.
+        if (this.status == 200) 
+        {
+            // add feedback
+            // TODO
+            //var frm = document.getElementById(formName.id);
+            //frm.getElementsByName("div_fb")[0].innerHTML = this.responseText;
+        }
+        
+    }
+
+    // Set up our request
+    XHR.open( "GET", "act?form=" + formName.id + "&" + queryString);
+
+    // The data sent is what the user provided in the form
+    XHR.send( FD );
+
 }
 
 // create relay options and settings
@@ -38,6 +81,7 @@ function createRelaySettings(num) {
         <input type="checkbox" name="on_off">\
         <label for="on_off">Once a day On/Off</label>\
     </div>\
+    <div name="div_fb"></div>
     <div>\
         <label>Time ON</label>\
         <input type="time" name="time_on" value="07:00"/>\
@@ -56,11 +100,11 @@ function createRelaySettings(num) {
     </div>\
     <div>\
         <label>Period OFF</label>\
-        <input type="time" name="rperiod_off" value="00:20"/>\
+        <input type="time" name="period_off" value="00:20"/>\
     </div>\
     <div>\
         <label>Input\'s priority</label>\
-        <select name="n_pri">\
+        <select name="in_pri">\
             <option value="">Select priority:</option>\
             <option value="2">HIEGHT</option>\
             <option value="1">MIDDLE</option>\
@@ -69,7 +113,7 @@ function createRelaySettings(num) {
     </div>\
     <div>\
         <label>Bound input/ADC</label>\
-        <select name="bound_in">\
+        <select name="bound_in" id="r${num}_in">\
             <option value="">Select an input:</option>\
         </select>\
     </div>\
@@ -106,14 +150,51 @@ function loadSettings()
 
                 var plc = document.getElementById("plc");
 
-                for (var i = 1; i <= config.device.relay; i++) {
+                for (var i = 0; i < config.device.relay; i++) {
                     var relayForm = document.createElement("form");
                     relayForm.id = `r${i}_form`;
                     plc.appendChild(relayForm);
                     // add relay
                     createRelaySettings(`${i}`);
                     // add inputs to relay
-                    addInputsOptions(`bound_in`, i, config.device.in, config.device.adc);;
+                    addInputsOptions(`r${i}_in`,  config.device.in, config.device.adc);
+                    //
+                    if (config.relay[i].on_off===1) {
+                        document.getElementsByName("on_off")[i].checked = true;
+                    }
+                    else {
+                        document.getElementsByName("on_off")[i].checked = false;
+                    }
+                    //
+                    document.getElementsByName("time_on")[i].value = config.relay[i].time_on;
+                    document.getElementsByName("time_off")[i].value = config.relay[i].time_off;
+                    //
+                    if (config.relay[i].period===1) {
+                        document.getElementsByName("period")[i].checked = true;
+                    }
+                    else {
+                        document.getElementsByName("period")[i].checked = false;
+                    }
+                    //
+                    document.getElementsByName("period_on")[i].value = config.relay[i].period_on;
+                    document.getElementsByName("period_off")[i].value = config.relay[i].period_off;
+                    //
+                    //document.getElementsByName("in_pri")[i].selectElement(this,config.relay[i].in_pri);
+                    //selectElement("in_pri", config.relay[i].in_pri);
+                    //document.getElementsByName("in_pri")[i].value = config.relay[i].in_pri;
+
+                    document.getElementsByName("adc_thld")[i].value = config.relay[i].adc_thld;
+                    document.getElementsByName("adc_hyst")[i].value = config.relay[i].adc_hyst;
+                    //
+                    if (config.relay[i].inv===1) {
+                        document.getElementsByName("inv")[i].checked = true;
+                    }
+                    else {
+                        document.getElementsByName("inv")[i].checked = false;
+                    }
+                    
+                    // add listener
+                    relayForm.addEventListener("change", function () { sendData(this); });
                 }
 
                 var myParent = document.getElementById("rtc_tz_div");
@@ -152,6 +233,8 @@ function loadSettings()
                 else {
                     document.getElementsByName("rtc_sntp")[0].checked = false;
                 }
+
+                
                 
             } 
             else 
@@ -180,42 +263,43 @@ function loadSettings()
     httpRequest.send();
 };
 
+
 // Data exchane between forms and aplication
 window.addEventListener( "load", function () {
     function sendData(formName) {
-      const XHR = new XMLHttpRequest();
-  
-      // Bind the FormData object and the form element
-      const FD = new FormData( formName );
-      const queryString = new URLSearchParams(FD).toString();
-      
-  
-      // Define what happens on successful data submission
-      XHR.addEventListener( "load", function(event) {
-        alert( event.target.responseText );
-      } );
-  
-      // Define what happens in case of error
-      XHR.addEventListener( "error", function( event ) {
-        alert( 'Oops! Something went wrong.' );
-      } );
-
-      XHR.onreadystatechange = function()
-    {
-        // Everything is good, the response was received.
-        if (this.status == 200) 
-        {
-            // add feedback
-            document.getElementById("wifi_ssid_fb").innerHTML = this.responseText;
-        }
+        const XHR = new XMLHttpRequest();
+    
+        // Bind the FormData object and the form element
+        const FD = new FormData( formName );
+        const queryString = new URLSearchParams(FD).toString();
         
-    }
+    
+        // Define what happens on successful data submission
+        XHR.addEventListener( "load", function(event) {
+            alert( event.target.responseText );
+        } );
+    
+        // Define what happens in case of error
+        XHR.addEventListener( "error", function( event ) {
+            alert( 'Oops! Something went wrong.' );
+        } );
+
+        XHR.onreadystatechange = function()
+        {
+            // Everything is good, the response was received.
+            if (this.status == 200) 
+            {
+                // add feedback
+                document.getElementById("wifi_ssid_fb").innerHTML = this.responseText;
+            }
+            
+        }
   
-      // Set up our request
-      XHR.open( "GET", "act?form=" + formName.id + "&" + queryString);
+    // Set up our request
+    XHR.open( "GET", "act?form=" + formName.id + "&" + queryString);
   
-      // The data sent is what the user provided in the form
-      XHR.send( FD );
+    // The data sent is what the user provided in the form
+    XHR.send( FD );
     }
   
     // Access the form element...
