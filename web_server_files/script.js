@@ -179,9 +179,8 @@ function loadSettings()
                     document.getElementsByName("period_on")[i].value = config.relay[i].period_on;
                     document.getElementsByName("period_off")[i].value = config.relay[i].period_off;
                     //
-                    //document.getElementsByName("in_pri")[i].selectElement(this,config.relay[i].in_pri);
-                    //selectElement("in_pri", config.relay[i].in_pri);
-                    //document.getElementsByName("in_pri")[i].value = config.relay[i].in_pri;
+                    document.getElementsByName("in_pri")[i].value = config.relay[i].in_pri;
+                    document.getElementsByName("bound_in")[i].value = config.relay[i].bound_in;
 
                     document.getElementsByName("adc_thld")[i].value = config.relay[i].adc_thld;
                     document.getElementsByName("adc_hyst")[i].value = config.relay[i].adc_hyst;
